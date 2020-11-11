@@ -26,7 +26,7 @@ class Songs : LitePalSupport {
     var type: Int = ConstantParam.SONGS_TYPE_SONGS
 
     /**
-     * 歌曲数量
+     * 歌曲
      */
     @Column
     var songList: MutableList<Song> = arrayListOf()
