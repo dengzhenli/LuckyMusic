@@ -186,6 +186,12 @@ class DiskView(context: Context, attrs: AttributeSet? = null) : View(context, at
         invalidate()
     }
 
+    fun setBitmapByte(bytes: ByteArray) {
+        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        setBitmapRect(srcRect, dstRect)
+        invalidate()
+    }
+
     companion object {
         // 绘制唱片相关变量
         // 中间图片默认半径

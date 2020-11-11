@@ -5,6 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import org.fattili.luckymusic.data.SongRepository
 import org.fattili.luckymusic.data.constant.ConstantParam
+import org.fattili.luckymusic.data.model.play.PlaySong
 import org.fattili.luckymusic.data.model.play.Song
 import org.fattili.luckymusic.player.PlayListener
 import org.fattili.luckymusic.player.PlayManager
@@ -20,6 +21,7 @@ import org.fattili.luckymusic.util.TimeUtils
 class PlayViewModel(private val repository: SongRepository) : BaseViewModel(), PlayListener {
 
 
+    var playSong: MutableLiveData<PlaySong> = MutableLiveData()
     var playState: MutableLiveData<Boolean> = MutableLiveData()
     var markState: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -83,6 +85,7 @@ class PlayViewModel(private val repository: SongRepository) : BaseViewModel(), P
 
 
     override fun onPlayerPlay() {
+        playSong.value = PlayManager.getInstance().getPlaySong()
         playState.value = true
         setSongState()
         val duration = PlayManager.getInstance().getDuration()

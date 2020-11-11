@@ -1,5 +1,6 @@
 package org.fattili.luckymusic.ui.view.main.play
 
+import android.media.MediaMetadataRetriever
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.databinding.DataBindingUtil
@@ -12,6 +13,7 @@ import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.player.PlayType
 import org.fattili.luckymusic.ui.base.BaseFragment
 import org.fattili.luckymusic.util.InjectorUtil
+import org.fattili.luckymusic.util.SongUtil
 import org.fattili.luckymusic.util.TimeUtils
 
 
@@ -63,6 +65,12 @@ class PlayFragment : BaseFragment() {
 
         viewModel.markState.observe(this, androidx.lifecycle.Observer { setMark(it) })
         viewModel.playState.observe(this, androidx.lifecycle.Observer { changePlayState(it) })
+        val mmr = MediaMetadataRetriever()
+        viewModel.playSong.observe(this, androidx.lifecycle.Observer {
+            SongUtil.getImage(mmr,it.path)
+                ?.let { it1 -> lm_play_gramophone_view.setBitmapByte(it1) }
+                ?:let { lm_play_gramophone_view.setPictureRes(R.mipmap.lm_play_default_picture) }
+        })
     }
 
 
