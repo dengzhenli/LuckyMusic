@@ -1,0 +1,89 @@
+package org.fattili.luckymusic.data.model.play
+
+import org.litepal.annotation.Column
+import org.litepal.crud.LitePalSupport
+
+/**
+ * 2020/10/28
+ * @author dengzhenli
+ * 播放列表中的歌曲
+ */
+class PlaySong : LitePalSupport {
+
+    /**
+     * 名称
+     */
+    @Column(nullable = false)
+    var name: String
+
+    /**
+     * 标题
+     */
+    @Column(nullable = false)
+    var title: String
+
+    /**
+     * 专辑
+     */
+    var album: String
+
+    /**
+     * 作者
+     */
+    var artist: String
+
+    /**
+     * 路径
+     */
+    @Column(nullable = false)
+    var path: String
+
+    /**
+     * 歌曲标记，目前都是本地歌曲，用路径标记
+     */
+    @Column(nullable = false)
+    var target: String
+
+    var duration: Int = 0
+
+
+    constructor(
+        name: String,
+        title: String,
+        path: String
+    ) : this( name, path,0, path,title,"","") {
+    }
+
+    constructor(
+        name: String,
+        target: String,
+        duration: Int,
+        path: String,
+        title: String,
+        artist: String,
+        album: String
+    ) {
+        this.name = name
+        this.title = title
+        this.target = target
+        this.album = album
+        this.artist = artist
+        this.duration = duration
+        this.path = path
+    }
+
+    fun castSong(): Song {
+        return Song(0, 0, name, target, duration, path, title, artist, album)
+    }
+
+    companion object {
+
+        fun cast(songs: List<Song>): List<PlaySong> {
+            var list = arrayListOf<PlaySong>()
+            for (song in songs) {
+                list.add(song.castSongPlay())
+            }
+            return list
+        }
+    }
+}
