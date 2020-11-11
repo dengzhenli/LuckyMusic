@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources >
+<resources>
     <string name="app_name">LuckyMusic</string>
     <string name="lm_songs_list_add_bt">Add song list</string>
     <string name="lm_songs_my_list">My song list</string>
@@ -41,4 +41,4 @@
         <item>list</item>
         <item>setting</item>
     </string-array>
-</resources >
+</resources>
