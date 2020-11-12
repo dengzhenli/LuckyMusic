@@ -3,15 +3,21 @@ package org.fattili.luckymusic.ui.view.main.song
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.lm_song_fragment_songs_list.*
 import org.fattili.luckymusic.R
+import org.fattili.luckymusic.data.base.BaseBean
+import org.fattili.luckymusic.data.constant.MessageType
 import org.fattili.luckymusic.data.constant.ShowMsg
 import org.fattili.luckymusic.data.model.play.PlaySong
 import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.ui.adapter.SongsListAdapter
 import org.fattili.luckymusic.ui.base.BaseFragment
 import org.fattili.luckymusic.ui.view.main.song.add.AddSongsDialog
+import org.fattili.luckymusic.ui.view.main.song.edit.SongsEditActivity
 import org.fattili.luckymusic.util.InjectorUtil
+import org.fattili.luckymusic.util.RxBus
+import org.fattili.luckymusic.util.registerInBus
 
 /**
  * 2020/10/28
@@ -35,6 +41,7 @@ class SongsListFragment : BaseFragment() {
     override fun initView() {
         initList()
         lm_song_songs_list_add_bt.setOnClickListener { showAddDialog() }
+        register()
     }
 
     override fun initData() {
@@ -84,6 +91,7 @@ class SongsListFragment : BaseFragment() {
                 }
 
                 override fun edit() {
+                    context?.let { SongsEditActivity.actionStart(it,id ) }
                 }
 
             }
@@ -115,5 +123,26 @@ class SongsListFragment : BaseFragment() {
         fun newInstance(): SongsListFragment {
             return SongsListFragment()
         }
+    }
+
+
+    /**
+     * 注册获取到数据
+     */
+    private fun register() {
+
+        RxBus.observe<BaseBean>()
+            .subscribe { t ->
+                    when (t.messageType) {
+                        MessageType.UPDATE_SONGS -> {
+                            viewModel.getSongsList()
+                        }
+                    }
+            }.registerInBus(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.unRegister(this)
     }
 }

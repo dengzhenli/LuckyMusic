@@ -37,6 +37,8 @@ class Songs : LitePalSupport {
     @Column
     var create_time: Long = System.currentTimeMillis()
 
+    constructor() : this(0, "", ConstantParam.SONGS_TYPE_SONGS) {}
+
     constructor(
         name: String,
         type: Int

@@ -26,6 +26,10 @@ class SongsDao {
         return songs.save()
     }
 
+    fun update(songs: Songs): Boolean {
+        return songs.update(songs.id) > 0
+    }
+
     fun delete(id: Long): Int {
         return LitePal.find(Songs::class.java, id).delete()
     }

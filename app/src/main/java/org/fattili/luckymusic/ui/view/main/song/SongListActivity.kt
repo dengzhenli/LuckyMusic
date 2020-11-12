@@ -8,17 +8,23 @@ import androidx.lifecycle.ViewModelStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jcodecraeer.xrecyclerview.ProgressStyle
 import com.jcodecraeer.xrecyclerview.XRecyclerView
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.lm_common_title.*
 import kotlinx.android.synthetic.main.lm_song_activity_song_list.*
 import org.fattili.file_select.ChooseFileMultiple
 import org.fattili.luckymusic.R
+import org.fattili.luckymusic.data.base.BaseBean
+import org.fattili.luckymusic.data.constant.MessageType
 import org.fattili.luckymusic.data.constant.ShowMsg
 import org.fattili.luckymusic.databinding.LmSongActivitySongListBinding
 import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.ui.adapter.SongListAdapter
 import org.fattili.luckymusic.ui.base.BaseActivity
+import org.fattili.luckymusic.ui.view.main.song.edit.SongEditActivity
 import org.fattili.luckymusic.util.InjectorUtil
+import org.fattili.luckymusic.util.RxBus
 import org.fattili.luckymusic.util.SongUtil
+import org.fattili.luckymusic.util.registerInBus
 import java.io.File
 import java.util.*
 
@@ -45,7 +51,6 @@ class SongListActivity : BaseActivity() {
         ).get(SongListViewModel::class.java)
     }
 
-    private var page = 0
     private lateinit var chooseFileMultiple: ChooseFileMultiple
     var songsId: Long = 0
     override fun initView() {
@@ -65,7 +70,7 @@ class SongListActivity : BaseActivity() {
                 true
             )
         }
-
+        register()
     }
 
     override fun initData() {
@@ -113,24 +118,16 @@ class SongListActivity : BaseActivity() {
         lm_song_song_list.adapter = itemAdapter
 
         lm_song_song_list.layoutManager = LinearLayoutManager(this)
-        //设置显示刷新时间
-        lm_song_song_list.defaultRefreshHeaderView.setRefreshTimeVisible(true)
-        //设置下拉等待进度条属性
-        lm_song_song_list.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader)
-        //设置上拉加载更多进度条属性
-        lm_song_song_list.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader)
-        //是否禁用上拉加载更多
-        lm_song_song_list.setLoadingMoreEnabled(true)
-        //*设定下拉刷新和上拉加载监听
+        lm_song_song_list.defaultRefreshHeaderView.setRefreshTimeVisible(true)//显示刷新时间
+        lm_song_song_list.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader) //下拉进度条属性
+        lm_song_song_list.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader)//上拉进度条属性
+        lm_song_song_list.setLoadingMoreEnabled(false)//禁用上拉
         lm_song_song_list.setLoadingListener(object : XRecyclerView.LoadingListener {
-            override fun onLoadMore() {
-                viewModel.getSongList(songsId)
-            }
+            override fun onLoadMore() {}
 
             override fun onRefresh() {
                 //下拉刷新
                 try {
-                    page = 1
                     viewModel.getSongList(songsId)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -176,6 +173,7 @@ class SongListActivity : BaseActivity() {
                 }
 
                 override fun edit() {
+                    SongEditActivity.actionStart(this@SongListActivity, id)
                 }
 
             }
@@ -184,5 +182,23 @@ class SongListActivity : BaseActivity() {
 
     }
 
+    /**
+     * 注册获取到数据
+     */
+    private fun register() {
 
+        RxBus.observe<BaseBean>()
+            .subscribe { t ->
+                    when (t.messageType) {
+                        MessageType.UPDATE_SONG -> {
+                            viewModel.getSongList(songsId)
+                        }
+                    }
+            }.registerInBus(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.unRegister(this)
+    }
 }

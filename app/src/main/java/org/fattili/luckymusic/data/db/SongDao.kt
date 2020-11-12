@@ -1,6 +1,7 @@
 package org.fattili.luckymusic.data.db
 
 import org.fattili.luckymusic.data.model.play.Song
+import org.fattili.luckymusic.data.model.play.Songs
 import org.litepal.LitePal
 /**
  * 2020/10/28
@@ -30,6 +31,9 @@ class SongDao {
         return song.save()
     }
 
+    fun update(song: Song): Boolean {
+        return song.update(song.id) > 0
+    }
     fun delete(id:Long): Boolean {
         return LitePal.find(Song::class.java,id).delete() > 0
     }

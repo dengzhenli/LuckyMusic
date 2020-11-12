@@ -41,6 +41,10 @@ class SongRepository private constructor(private val songDao: SongDao) {
         return songDao.addSong(song)
     }
 
+    fun edit(song: Song): Boolean {
+        return songDao.update(song)
+    }
+
     fun deleteSong(song: Song): Boolean {
         return songDao.deleteSong(song)
     }

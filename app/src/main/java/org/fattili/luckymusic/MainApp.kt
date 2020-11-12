@@ -2,6 +2,7 @@ package org.fattili.luckymusic
 
 import android.app.Application
 import android.content.Context
+import androidx.multidex.MultiDex
 import org.fattili.luckymusic.player.PlayManager
 import org.litepal.LitePal
 
@@ -18,6 +19,11 @@ class MainApp :Application(){
 
         LitePal.initialize(this)
         initPlay()
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this);
     }
 
     private fun initPlay(){

@@ -35,6 +35,16 @@
     <string name="lm_song_song_operate_delete">Delete</string>
     <string name="lm_song_song_operate_edit">Edit</string>
     <string name="lm_song_song_operate_pre_play">Next play</string>
+
+    <string name="lm_song_song_edit_album_label">Album</string>
+    <string name="lm_song_song_edit_album_hint">Input Album</string>
+    <string name="lm_song_song_edit_artist_label">Artist</string>
+    <string name="lm_song_song_edit_artist_hint">Input Artist</string>
+    <string name="lm_song_song_edit_title_label">Title</string>
+    <string name="lm_song_song_edit_title_hint">Input Title</string>
+
+    <string name="lm_song_songs_edit_name_label">Song List Name</string>
+    <string name="lm_song_songs_edit_name_hint">Input Name</string>
     <!-- Main -->
     <string-array name="lm_main_titles">
         <item>home</item>

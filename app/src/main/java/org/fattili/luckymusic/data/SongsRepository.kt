@@ -6,6 +6,7 @@ import org.fattili.luckymusic.MainApp
 import org.fattili.luckymusic.R
 import org.fattili.luckymusic.data.constant.ConstantParam
 import org.fattili.luckymusic.data.db.SongsDao
+import org.fattili.luckymusic.data.model.play.Song
 import org.fattili.luckymusic.data.model.play.Songs
 
 /**
@@ -34,6 +35,9 @@ class SongsRepository private constructor(private val songsDao: SongsDao) {
         return songsDao.getSongs(songsId)
     }
 
+    fun edit(songs: Songs): Boolean {
+        return songsDao.update(songs)
+    }
     fun delete(songsId: Long) :Int {
         return songsDao.delete(songsId)
     }
