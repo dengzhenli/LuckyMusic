@@ -201,7 +201,8 @@ class SongListActivity : BaseActivity() {
                         viewModel.getSongList(songsId)
                     }
                     MessageType.CHANGE_PLAY_STATE -> {
-                        itemAdapter.update()
+                        val songId = t.msg?.toLong()
+                        itemAdapter.notifyDataSetChanged()
                     }
                 }
             }.registerInBus(this)

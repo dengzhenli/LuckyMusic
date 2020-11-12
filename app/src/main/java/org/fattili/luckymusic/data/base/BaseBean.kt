@@ -17,6 +17,7 @@ class BaseBean {
         this.msg = msg
     }
 
+
     constructor(messageType: MessageType) {
         this.messageType = messageType
     }

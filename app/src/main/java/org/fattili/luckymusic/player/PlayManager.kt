@@ -287,11 +287,11 @@ class PlayManager private constructor():Player.PlayCallBack {
 
     private fun notifyPlaySongUpdate(){
         getPlaySong()?.target?.let { PlayDataManager.writeTarget(it) }
-        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_SONGS))
+        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_SONGS,getPlaySong()?.songId.toString()))
     }
 
     private fun notifyPlayStateUpdate(){
-        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_STATE))
+        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_STATE,getPlaySong()?.songId.toString()))
     }
 
     companion object {
