@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.fattili.luckymusic.data.SongRepository
 import org.fattili.luckymusic.data.SongsRepository
+import org.fattili.luckymusic.data.constant.ConstantParam
 import org.fattili.luckymusic.data.model.play.Song
+import org.fattili.luckymusic.data.model.play.Songs
 import org.fattili.luckymusic.ui.base.BaseViewModel
 
 /**
@@ -26,14 +28,22 @@ class SongListViewModel(private val repository: SongRepository,private val songs
         }
     }
 
-    fun addSong(song: Song) {
+    fun addSong(song: Song):Boolean {
+        if (repository.getSong(song.songs_id, song.target) != null){
+            return false
+        }
         repository.addSong(song)
         list.add(song)
+        return true
     }
 
     fun getTitle(songsId: Long): String? {
         var songs = songsRepository.getSongs(songsId)
         return songs?.name
+    }
+
+    fun getSongsList(): MutableList<Songs> {
+        return songsRepository.getLocalSongsList()
     }
 
     fun getSong(id: Long): Song? {

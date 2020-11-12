@@ -16,11 +16,13 @@ class SongListMorePopup() : BasePopup() {
     var deleteLayout: LinearLayout? = null
     var editLayout: LinearLayout? = null
     var prePlayLayout: LinearLayout? = null
+    var addToSongsLayout: LinearLayout? = null
 
     interface PopCallBack {
         fun delete()
         fun prePlay()
         fun edit()
+        fun addToSongs()
     }
 
     var callback: PopCallBack? = null
@@ -32,11 +34,13 @@ class SongListMorePopup() : BasePopup() {
         deleteLayout = contentView?.findViewById(R.id.lm_song_song_list_more_delete_ll)
         editLayout = contentView?.findViewById(R.id.lm_song_song_list_more_edit_ll)
         prePlayLayout = contentView?.findViewById(R.id.lm_song_song_list_more_pre_play_ll)
+        addToSongsLayout = contentView?.findViewById(R.id.lm_song_song_list_more_add_to_songs_ll)
 
         back?.setOnClickListener { miss() }
         deleteLayout?.setOnClickListener { delete() }
         editLayout?.setOnClickListener { edit() }
         prePlayLayout?.setOnClickListener { prePlay() }
+        addToSongsLayout?.setOnClickListener { addToSongs() }
     }
 
 
@@ -59,6 +63,10 @@ class SongListMorePopup() : BasePopup() {
     private fun prePlay() {
         miss()
         callback?.prePlay()
+    }
+    private fun addToSongs() {
+        miss()
+        callback?.addToSongs()
     }
 
 }

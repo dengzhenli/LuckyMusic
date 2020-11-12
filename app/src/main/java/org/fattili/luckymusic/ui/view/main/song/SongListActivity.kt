@@ -16,10 +16,12 @@ import org.fattili.luckymusic.R
 import org.fattili.luckymusic.data.base.BaseBean
 import org.fattili.luckymusic.data.constant.MessageType
 import org.fattili.luckymusic.data.constant.ShowMsg
+import org.fattili.luckymusic.data.model.play.Songs
 import org.fattili.luckymusic.databinding.LmSongActivitySongListBinding
 import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.ui.adapter.SongListAdapter
 import org.fattili.luckymusic.ui.base.BaseActivity
+import org.fattili.luckymusic.ui.view.main.song.add.AddToSongsPopup
 import org.fattili.luckymusic.ui.view.main.song.edit.SongEditActivity
 import org.fattili.luckymusic.util.InjectorUtil
 import org.fattili.luckymusic.util.RxBus
@@ -138,9 +140,9 @@ class SongListActivity : BaseActivity() {
         itemAdapter.setPlayClickListener { pos ->
             val id = itemAdapter.getItem(pos)?.id ?: 0
             if (id == PlayManager.getInstance().getPlaySong()?.songId) {
-                if (PlayManager.getInstance().getPlaying()){
+                if (PlayManager.getInstance().getPlaying()) {
                     PlayManager.getInstance().pause()
-                }else{
+                } else {
                     PlayManager.getInstance().play()
                 }
             } else {
@@ -183,15 +185,32 @@ class SongListActivity : BaseActivity() {
                     SongEditActivity.actionStart(this@SongListActivity, id)
                 }
 
+                override fun addToSongs() {
+
+                    val addPop = AddToSongsPopup(viewModel.getSongsList())
+                    addPop.callback = object : AddToSongsPopup.PopCallBack {
+                        override fun choice(pos: Int, songs: Songs) {
+                            val song = viewModel.getSong(id)?.clone(false)
+                            if (song != null) {
+                                song.songs_id = songs.id
+                                if (viewModel.addSong(song)){
+                                    showMsg(ShowMsg.msg_add_ok)
+                                }else{
+                                    showMsg(ShowMsg.msg_song_exist)
+                                }
+
+                            }
+                        }
+                    }
+                    addPop.popupChoose(this@SongListActivity, lm_song_song_list)
+                }
+
             }
             pop.popupChoose(this, lm_song_song_list)
         }
 
     }
 
-    /**
-     * 注册获取到数据
-     */
     private fun register() {
 
         RxBus.observe<BaseBean>()

@@ -129,6 +129,30 @@
                         android:text="@string/lm_song_song_operate_pre_play">
                     </TextView>
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lm_song_song_list_more_add_to_songs_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/lm_common_ic_add_24"
+                        android:scaleType="centerInside">
+                    </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        style="@style/lm_font_style_18"
+                        android:text="@string/lm_song_song_operate_add_to_songs">
+                    </TextView>
+                </LinearLayout>
             </LinearLayout>
 
            

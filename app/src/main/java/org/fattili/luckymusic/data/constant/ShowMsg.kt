@@ -11,4 +11,6 @@ object ShowMsg{
     const val msg_delete_ok = "删除成功"
     const val msg_delete_fail = "删除失败"
     const val msg_add_playlist_ok = "已添加到播放列表"
+    const val msg_add_ok = "已添加"
+    const val msg_song_exist = "歌曲已存在"
 }

@@ -27,6 +27,11 @@ class SongsRepository private constructor(private val songsDao: SongsDao) {
         list
     }
 
+    fun getLocalSongsList():MutableList<Songs> {
+        return songsDao.getSongsList()
+
+    }
+
     fun addSongs(songs: Songs) :Boolean {
         return songsDao.addSongs(songs)
     }

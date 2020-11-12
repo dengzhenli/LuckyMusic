@@ -35,6 +35,7 @@
     <string name="lm_song_song_operate_delete">Delete</string>
     <string name="lm_song_song_operate_edit">Edit</string>
     <string name="lm_song_song_operate_pre_play">Next play</string>
+    <string name="lm_song_song_operate_add_to_songs">Add to songs</string>
 
     <string name="lm_song_song_edit_album_label">Album</string>
     <string name="lm_song_song_edit_album_hint">Input Album</string>

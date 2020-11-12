@@ -37,6 +37,8 @@
     <string name="lm_song_song_operate_delete">删除</string>
     <string name="lm_song_song_operate_edit">编辑</string>
     <string name="lm_song_song_operate_pre_play">下一首播放</string>
+    <string name="lm_song_song_operate_add_to_songs">添加到歌单</string>
+
 
     <string name="lm_song_song_edit_album_label">专辑</string>
     <string name="lm_song_song_edit_album_hint">请输入专辑名称</string>
