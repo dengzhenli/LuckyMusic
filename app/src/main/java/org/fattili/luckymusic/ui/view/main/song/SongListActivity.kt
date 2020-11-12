@@ -46,6 +46,7 @@ class SongListActivity : BaseActivity() {
             layoutId
         )
     }
+
     private val viewModel by lazy {
         ViewModelProvider(
             ViewModelStore(),
@@ -54,7 +55,8 @@ class SongListActivity : BaseActivity() {
     }
 
     private lateinit var chooseFileMultiple: ChooseFileMultiple
-    var songsId: Long = 0
+
+
     override fun initView() {
         supportActionBar?.hide()
 
@@ -76,9 +78,9 @@ class SongListActivity : BaseActivity() {
     }
 
     override fun initData() {
-        songsId = intent.getLongExtra("songsId", 0)
-        viewModel.getTitle(songsId)?.let { setTitleName(it) }
-        viewModel.getSongList(songsId)
+        viewModel.songsId = intent.getLongExtra("songsId", 0)
+        viewModel.getTitle()?.let { setTitleName(it) }
+        viewModel.getSongList()
         viewModel.dataChanged.observe(this, androidx.lifecycle.Observer {
             if (viewModel.list.isEmpty()) {
                 lm_song_song_no_item_ll.visibility = View.VISIBLE
@@ -96,17 +98,7 @@ class SongListActivity : BaseActivity() {
         chooseFileMultiple = ChooseFileMultiple()
         chooseFileMultiple.chooseFileBack = object : ChooseFileMultiple.OnChooseFileBack {
             override fun onChooseBack(paths: ArrayList<String?>?) {
-                if (paths != null) {
-                    var mmr = MediaMetadataRetriever()
-                    for (path in paths) {
-                        if (path != null) {
-                            val file = File(path)
-                            var song = SongUtil.getSong(songsId, mmr, file)
-                            viewModel.addSong(song)
-                        }
-                    }
-                    itemAdapter.update()
-                }
+                viewModel.addFile(paths)
             }
         }
         chooseFileMultiple.whiteList = arrayListOf("mp3", "mwa")
@@ -126,11 +118,10 @@ class SongListActivity : BaseActivity() {
         lm_song_song_list.setLoadingMoreEnabled(false)//禁用上拉
         lm_song_song_list.setLoadingListener(object : XRecyclerView.LoadingListener {
             override fun onLoadMore() {}
-
             override fun onRefresh() {
                 //下拉刷新
                 try {
-                    viewModel.getSongList(songsId)
+                    viewModel.getSongList()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -138,77 +129,53 @@ class SongListActivity : BaseActivity() {
         })
 
         itemAdapter.setPlayClickListener { pos ->
-            val id = itemAdapter.getItem(pos)?.id ?: 0
-            if (id == PlayManager.getInstance().getPlaySong()?.songId) {
-                if (PlayManager.getInstance().getPlaying()) {
-                    PlayManager.getInstance().pause()
-                } else {
-                    PlayManager.getInstance().play()
-                }
-            } else {
-                val song = viewModel.getSong(id)
-                song?.let {
-                    PlayManager.getInstance().addSong(
-                        song.castSongPlay(),
-                        PlayManager.getInstance().getCurrentIndex()
-                    )
-                }
-                PlayManager.getInstance().goto(PlayManager.getInstance().getCurrentIndex())
-            }
-
+            viewModel.play(pos)
         }
 
         itemAdapter.setMoreClickListener { pos ->
             val id = itemAdapter.getItem(pos)?.id ?: 0
             val pop = SongListMorePopup()
             pop.callback = object : SongListMorePopup.PopCallBack {
-                override fun delete() {
-                    if (viewModel.delete(id)) {
-                        showMsg(ShowMsg.msg_delete_ok)
-                    } else {
-                        showMsg(ShowMsg.msg_delete_fail)
-                    }
-                }
-
-                override fun prePlay() {
-                    val song = viewModel.getSong(id)
-                    song?.let {
-                        PlayManager.getInstance().addSong(
-                            song.castSongPlay(),
-                            PlayManager.getInstance().getCurrentIndex() + 1
-                        )
-                    }
-                    showMsg(ShowMsg.msg_add_playlist_ok)
-                }
-
-                override fun edit() {
-                    SongEditActivity.actionStart(this@SongListActivity, id)
-                }
-
-                override fun addToSongs() {
-
-                    val addPop = AddToSongsPopup(viewModel.getSongsList())
-                    addPop.callback = object : AddToSongsPopup.PopCallBack {
-                        override fun choice(pos: Int, songs: Songs) {
-                            val song = viewModel.getSong(id)?.clone(false)
-                            if (song != null) {
-                                song.songs_id = songs.id
-                                if (viewModel.addSong(song)){
-                                    showMsg(ShowMsg.msg_add_ok)
-                                }else{
-                                    showMsg(ShowMsg.msg_song_exist)
-                                }
-
-                            }
-                        }
-                    }
-                    addPop.popupChoose(this@SongListActivity, lm_song_song_list)
-                }
-
+                override fun delete() { delete(id) }
+                override fun prePlay() { prePlay(id) }
+                override fun edit() { SongEditActivity.actionStart(this@SongListActivity, id) }
+                override fun addToSongs() { addToSongs(id) }
             }
             pop.popupChoose(this, lm_song_song_list)
         }
 
+    }
+
+    fun delete(songId: Long) {
+        if (viewModel.delete(songId)) {
+            showMsg(ShowMsg.msg_delete_ok)
+        } else {
+            showMsg(ShowMsg.msg_delete_fail)
+        }
+    }
+
+    fun prePlay(songId: Long) {
+        viewModel.prePlay(songId)
+        showMsg(ShowMsg.msg_add_playlist_ok)
+    }
+
+    private fun addToSongs(songId: Long) {
+        val addPop = AddToSongsPopup(viewModel.getSongsList())
+        addPop.callback = object : AddToSongsPopup.PopCallBack {
+            override fun choice(pos: Int, songs: Songs) {
+                val song = viewModel.getSong(songId)?.clone(false)
+                if (song != null) {
+                    song.songs_id = songs.id
+                    if (viewModel.addSong(song)) {
+                        showMsg(ShowMsg.msg_add_ok)
+                    } else {
+                        showMsg(ShowMsg.msg_song_exist)
+                    }
+
+                }
+            }
+        }
+        addPop.popupChoose(this@SongListActivity, lm_song_song_list)
     }
 
     private fun register() {
@@ -217,10 +184,9 @@ class SongListActivity : BaseActivity() {
             .subscribe { t ->
                 when (t.messageType) {
                     MessageType.UPDATE_SONG -> {
-                        viewModel.getSongList(songsId)
+                        viewModel.getSongList()
                     }
                     MessageType.CHANGE_PLAY_STATE -> {
-                        val songId = t.msg?.toLong()
                         itemAdapter.notifyDataSetChanged()
                     }
                 }

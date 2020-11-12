@@ -3,14 +3,11 @@ package org.fattili.luckymusic.ui.view.main.song
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.lm_song_fragment_songs_list.*
 import org.fattili.luckymusic.R
 import org.fattili.luckymusic.data.base.BaseBean
 import org.fattili.luckymusic.data.constant.MessageType
 import org.fattili.luckymusic.data.constant.ShowMsg
-import org.fattili.luckymusic.data.model.play.PlaySong
-import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.ui.adapter.SongsListAdapter
 import org.fattili.luckymusic.ui.base.BaseFragment
 import org.fattili.luckymusic.ui.view.main.song.add.AddSongsDialog
@@ -63,43 +60,35 @@ class SongsListFragment : BaseFragment() {
             val id = itemAdapter.getItem(pos)?.id ?: 0
             val pop = SongsListMorePopup(id)
             pop.callback = object : SongsListMorePopup.PopCallBack {
-                override fun play() {
-                    val songs = viewModel.getSongs(id)
-                    val list = songs?.songList
-                    list?.let {
-                        PlayManager.getInstance()
-                            .updatePlayList(PlaySong.cast(it) as MutableList<PlaySong>)
-                    }
-                }
-
-                override fun delete() {
-                    if (viewModel.delete(id) > 0) {
-                        showMsg(ShowMsg.msg_delete_ok)
-                    } else {
-                        showMsg(ShowMsg.msg_delete_fail)
-                    }
-                }
-
-                override fun prePlay() {
-                    val songs = viewModel.getSongs(id)
-                    val list = songs?.songList
-                    list?.let {
-                        PlayManager.getInstance()
-                            .addPlayList(PlaySong.cast(it) as MutableList<PlaySong>)
-                    }
-                    showMsg(ShowMsg.msg_add_playlist_ok)
-                }
-
-                override fun edit() {
-                    context?.let { SongsEditActivity.actionStart(it,id ) }
-                }
-
+                override fun play() { play(id) }
+                override fun delete() { delete(id) }
+                override fun prePlay() { prePlay(id) }
+                override fun edit() { context?.let { SongsEditActivity.actionStart(it,id ) } }
             }
             pop.popupChoose(activity, view)
         }
         lm_song_songs_list.layoutManager = LinearLayoutManager(context)
         lm_song_songs_list.adapter = itemAdapter
 
+    }
+
+    private fun play(songsId:Long){
+        viewModel.play(songsId)
+    }
+
+
+    private fun delete(songsId:Long){
+        if (viewModel.delete(songsId) > 0) {
+            showMsg(ShowMsg.msg_delete_ok)
+        } else {
+            showMsg(ShowMsg.msg_delete_fail)
+        }
+    }
+
+
+    private fun prePlay(songsId:Long){
+        viewModel.prePlay(songsId)
+        showMsg(ShowMsg.msg_add_playlist_ok)
     }
 
     private fun showAddDialog() {

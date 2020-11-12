@@ -35,7 +35,6 @@ class AddToSongsPopup(var list: MutableList<Songs>) : BasePopup() {
         back?.setOnClickListener { miss() }
 
         adapter = context?.let { AddToSongsListAdapter(it, list) }
-
         listview?.adapter = adapter
 
         listview?.setOnItemClickListener { parent, view, position, id ->

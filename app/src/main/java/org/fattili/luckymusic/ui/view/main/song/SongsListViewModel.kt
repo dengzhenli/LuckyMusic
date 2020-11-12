@@ -6,7 +6,10 @@ import kotlinx.coroutines.launch
 import org.fattili.luckymusic.data.SongRepository
 import org.fattili.luckymusic.data.SongsRepository
 import org.fattili.luckymusic.data.constant.ConstantParam
+import org.fattili.luckymusic.data.constant.ShowMsg
+import org.fattili.luckymusic.data.model.play.PlaySong
 import org.fattili.luckymusic.data.model.play.Songs
+import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.ui.base.BaseViewModel
 
 /**
@@ -56,6 +59,22 @@ class SongsListViewModel(
         return ret
     }
 
+    fun play(songsId:Long){
+        val songs = getSongs(songsId)
+        val list = songs?.songList
+        list?.let {
+            PlayManager.getInstance()
+                .updatePlayList(PlaySong.cast(it) as MutableList<PlaySong>)
+        }
+    }
+
+    fun prePlay(songsId:Long){
+        val songs = getSongs(songsId)
+        val list = songs?.songList
+        list?.let {
+            PlayManager.getInstance().addPlayList(PlaySong.cast(it) as MutableList<PlaySong>)
+        }
+    }
     private fun launch(block: suspend () -> Unit) = viewModelScope.launch {
         try {
             block()
