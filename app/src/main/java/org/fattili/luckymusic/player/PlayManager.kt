@@ -1,9 +1,12 @@
 package org.fattili.luckymusic.player
 
+import org.fattili.luckymusic.data.base.BaseBean
+import org.fattili.luckymusic.data.constant.MessageType
 import org.fattili.luckymusic.data.constant.ShowMsg
 import org.fattili.luckymusic.data.model.play.PlaySong
 import org.fattili.luckymusic.util.ArrayUtil
 import org.fattili.luckymusic.util.Logger
+import org.fattili.luckymusic.util.RxBus
 import org.fattili.luckymusic.util.ToastUtil
 import kotlin.random.Random
 
@@ -169,10 +172,12 @@ class PlayManager private constructor():Player.PlayCallBack {
 
     override fun onPause(song: PlaySong?) {
         playListener?.onPlayerPause()
+        notifyPlayStateUpdate()
     }
 
     override fun onPlay(song: PlaySong?) {
         playListener?.onPlayerPlay()
+        notifyPlayStateUpdate()
     }
     /** —————————————————————————————————————参数获取————————————————————————————————————————————— */
 
@@ -204,7 +209,7 @@ class PlayManager private constructor():Player.PlayCallBack {
 
 
     fun getCurrentIndex(): Int {
-        return currentIndex + 1
+        return currentIndex
     }
 
 
@@ -282,6 +287,11 @@ class PlayManager private constructor():Player.PlayCallBack {
 
     private fun notifyPlaySongUpdate(){
         getPlaySong()?.target?.let { PlayDataManager.writeTarget(it) }
+        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_SONGS))
+    }
+
+    private fun notifyPlayStateUpdate(){
+        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_STATE))
     }
 
     companion object {

@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import org.fattili.luckymusic.R
 import org.fattili.luckymusic.data.model.play.PlaySong
+import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.ui.widget.RoundImageView
 import org.fattili.luckymusic.util.SongUtil
 
@@ -59,6 +60,7 @@ class PlayListAdapter(val context: Context, private var songList: List<PlaySong>
             holder.name = view.findViewById(R.id.lm_play_item_playlist_name_tv)
             holder.image = view.findViewById(R.id.lm_play_item_playlist_iv)
             holder.deleteImage = view.findViewById(R.id.lm_play_item_playlist_delete_iv)
+            holder.playImage = view.findViewById(R.id.lm_play_item_playlist_playing_iv)
             view.tag = holder
         } else {
             holder = view.tag as ViewHolder
@@ -68,6 +70,9 @@ class PlayListAdapter(val context: Context, private var songList: List<PlaySong>
             .load(SongUtil.getImage(MediaMetadataRetriever(), songList[position].path))
             .error(R.mipmap.lm_dog)
             .into(holder.image!!)
+        holder.playImage?.visibility =
+            if (PlayManager.getInstance().getCurrentIndex() == position) View.VISIBLE
+            else View.INVISIBLE
 
         holder.name?.text = songList[position].title
         holder.singer?.text = songList[position].artist
@@ -80,6 +85,7 @@ class PlayListAdapter(val context: Context, private var songList: List<PlaySong>
         var name: TextView? = null
         var image: RoundImageView? = null
         var deleteImage: ImageView? = null
+        var playImage: ImageView? = null
     }
 
 

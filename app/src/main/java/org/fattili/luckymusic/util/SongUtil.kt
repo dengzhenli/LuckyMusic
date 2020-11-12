@@ -1,7 +1,9 @@
 package org.fattili.luckymusic.util
 
 import android.media.MediaMetadataRetriever
+import android.util.Log
 import org.fattili.luckymusic.data.model.play.Song
+import org.fattili.luckymusic.player.PlayManager
 import java.io.File
 
 /**
@@ -36,5 +38,14 @@ object SongUtil {
             e.printStackTrace()
         }
         return null
+    }
+
+    fun checkIsPlay(song: Song?): Boolean? {
+        var playSong = PlayManager.getInstance().getPlaySong()
+        playSong?.let {
+            Logger.d(PlayManager.getInstance().getPlaying().toString())
+            return song?.id == playSong.songId && PlayManager.getInstance().getPlaying()
+        }
+        return false
     }
 }

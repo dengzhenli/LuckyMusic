@@ -57,6 +57,9 @@ class SongListAdapter(list: List<Song?>?) :
             holder.itemView.setOnClickListener { clickListener?.invoke(position) }
             holder.moreBt.setOnClickListener { moreListener.invoke(position) }
             holder.playBt.setOnClickListener { playListener.invoke(position) }
+            holder.playBt.setImageResource(
+                if (SongUtil.checkIsPlay(list[position]) == true) R.drawable.lm_common_ic_pause_24
+                else R.drawable.lm_common_ic_play_24)
 
             context?.let { it1 ->
                 Glide.with(it1)

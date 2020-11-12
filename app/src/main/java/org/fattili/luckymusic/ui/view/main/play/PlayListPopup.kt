@@ -6,10 +6,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import org.fattili.luckymusic.R
+import org.fattili.luckymusic.data.base.BaseBean
+import org.fattili.luckymusic.data.constant.MessageType
 import org.fattili.luckymusic.data.model.play.PlaySong
 import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.ui.adapter.PlayListAdapter
 import org.fattili.luckymusic.ui.base.BasePopup
+import org.fattili.luckymusic.util.RxBus
+import org.fattili.luckymusic.util.registerInBus
 
 /**
  * 播放列表
@@ -51,7 +55,23 @@ class PlayListPopup : BasePopup() {
             PlayManager.getInstance().remove(pos)
             adapter?.upData()
         }
+        register()
     }
 
+    override fun onDismiss() {
+        super.onDismiss()
+        RxBus.unRegister(this)
+    }
+
+    private fun register() {
+        RxBus.observe<BaseBean>()
+            .subscribe { t ->
+                when (t.messageType) {
+                    MessageType.CHANGE_PLAY_SONGS -> {
+                        adapter?.upData()
+                    }
+                }
+            }.registerInBus(this)
+    }
 
 }

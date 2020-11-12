@@ -10,6 +10,10 @@ import org.litepal.crud.LitePalSupport
  */
 class PlaySong : LitePalSupport {
 
+
+    var songId: Long = 0
+
+    var songsId: Long = 0
     /**
      * 名称
      */
@@ -51,7 +55,7 @@ class PlaySong : LitePalSupport {
         name: String,
         title: String,
         path: String
-    ) : this( name, path,0, path,title,"","") {
+    ) : this( name, path,0, path,title,"","",0,0) {
     }
 
     constructor(
@@ -61,7 +65,9 @@ class PlaySong : LitePalSupport {
         path: String,
         title: String,
         artist: String,
-        album: String
+        album: String,
+        songId: Long,
+        songsId: Long
     ) {
         this.name = name
         this.title = title
@@ -70,10 +76,12 @@ class PlaySong : LitePalSupport {
         this.artist = artist
         this.duration = duration
         this.path = path
+        this.songId = songId
+        this.songsId = songsId
     }
 
     fun castSong(): Song {
-        return Song(0, 0, name, target, duration, path, title, artist, album)
+        return Song(songId, songsId, name, target, duration, path, title, artist, album)
     }
 
     companion object {

@@ -135,17 +135,24 @@ class SongListActivity : BaseActivity() {
             }
         })
 
-        itemAdapter.setPlayClickListener {  pos ->
+        itemAdapter.setPlayClickListener { pos ->
             val id = itemAdapter.getItem(pos)?.id ?: 0
-            val song = viewModel.getSong(id)
-            song?.let {
-                PlayManager.getInstance().addSong(
-                    song.castSongPlay(),
-                    PlayManager.getInstance().getCurrentIndex()
-                )
+            if (id == PlayManager.getInstance().getPlaySong()?.songId) {
+                if (PlayManager.getInstance().getPlaying()){
+                    PlayManager.getInstance().pause()
+                }else{
+                    PlayManager.getInstance().play()
+                }
+            } else {
+                val song = viewModel.getSong(id)
+                song?.let {
+                    PlayManager.getInstance().addSong(
+                        song.castSongPlay(),
+                        PlayManager.getInstance().getCurrentIndex()
+                    )
+                }
+                PlayManager.getInstance().goto(PlayManager.getInstance().getCurrentIndex())
             }
-            PlayManager.getInstance().pause()
-            PlayManager.getInstance().play()
 
         }
 
@@ -189,11 +196,14 @@ class SongListActivity : BaseActivity() {
 
         RxBus.observe<BaseBean>()
             .subscribe { t ->
-                    when (t.messageType) {
-                        MessageType.UPDATE_SONG -> {
-                            viewModel.getSongList(songsId)
-                        }
+                when (t.messageType) {
+                    MessageType.UPDATE_SONG -> {
+                        viewModel.getSongList(songsId)
                     }
+                    MessageType.CHANGE_PLAY_STATE -> {
+                        itemAdapter.update()
+                    }
+                }
             }.registerInBus(this)
     }
 

@@ -8,5 +8,7 @@ package org.fattili.luckymusic.data.constant
  */
 enum class MessageType {
     UPDATE_SONG,  //更新歌曲
-    UPDATE_SONGS //更新歌单
+    UPDATE_SONGS, //更新歌单
+    CHANGE_PLAY_SONGS, //
+    CHANGE_PLAY_STATE //
 }

@@ -88,7 +88,7 @@ class Song : LitePalSupport {
     }
 
     fun castSongPlay(): PlaySong {
-        return PlaySong(name, target, duration, path, title, artist, album)
+        return PlaySong(name, target, duration, path, title, artist, album, id, songs_id)
     }
 
     companion object {

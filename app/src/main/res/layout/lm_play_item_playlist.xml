@@ -9,9 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:padding="10dp">
 
+        <ImageView
+            android:id="@+id/lm_play_item_playlist_playing_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/lm_play_ic_pause"
+            app:tint="@color/colorPrimary">
+        </ImageView>
         <org.fattili.luckymusic.ui.widget.RoundImageView
             android:id="@+id/lm_play_item_playlist_iv"
             android:layout_width="45dp"

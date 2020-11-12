@@ -43,7 +43,7 @@ abstract class BasePopup {
             pWindow?.isClippingEnabled = true
             backgroundAlpha(0.5f)
             pWindow?.showAtLocation(view, Gravity.TOP, 0, 0)
-            pWindow?.setOnDismissListener { backgroundAlpha(1.0f) }
+            pWindow?.setOnDismissListener {onDismiss() }
         }
     }
 
@@ -59,6 +59,10 @@ abstract class BasePopup {
     }
 
     open fun initData() {
+    }
+
+    open fun onDismiss() {
+        backgroundAlpha(1.0f)
     }
 
     protected abstract val layoutId: Int
