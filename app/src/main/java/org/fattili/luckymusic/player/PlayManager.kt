@@ -1,8 +1,10 @@
 package org.fattili.luckymusic.player
 
 import org.fattili.luckymusic.data.base.BaseBean
+import org.fattili.luckymusic.data.constant.ConstantParam
 import org.fattili.luckymusic.data.constant.MessageType
 import org.fattili.luckymusic.data.constant.ShowMsg
+import org.fattili.luckymusic.data.db.LuckyMusicDatabase
 import org.fattili.luckymusic.data.model.play.PlaySong
 import org.fattili.luckymusic.util.ArrayUtil
 import org.fattili.luckymusic.util.Logger
@@ -16,7 +18,7 @@ import kotlin.random.Random
  * @author dengzhenli
  * 播放管理
  */
-class PlayManager private constructor():Player.PlayCallBack {
+class PlayManager private constructor() : Player.PlayCallBack {
     var playList: MutableList<PlaySong>? = null
     var playType: PlayType
     var player: Player? = Player()
@@ -94,7 +96,7 @@ class PlayManager private constructor():Player.PlayCallBack {
 
                     if (currentIndex in 0 until n) {
                         player?.playSong = playList!![currentIndex]
-                    }else{
+                    } else {
                         currentIndex = n - 1
                     }
                 }
@@ -119,7 +121,7 @@ class PlayManager private constructor():Player.PlayCallBack {
             return
         }
         pause()
-        val n = playList?.size?:0
+        val n = playList?.size ?: 0
         if (n > 0) {
             when (playType) {
                 PlayType.SINGLE_LOOP -> {
@@ -136,7 +138,7 @@ class PlayManager private constructor():Player.PlayCallBack {
 
                     if (currentIndex in 0 until n) {
                         player?.playSong = playList!![currentIndex]
-                    }else{
+                    } else {
                         currentIndex = 0
                     }
                 }
@@ -166,8 +168,10 @@ class PlayManager private constructor():Player.PlayCallBack {
 
     /** —————————————————————————————————————播放回调————————————————————————————————————————————— */
     override fun onCompletion(song: PlaySong?) {
-        playLooking = false
-        complete()
+        if (playLooking) {
+            playLooking = false
+            complete()
+        }
     }
 
     override fun onPause(song: PlaySong?) {
@@ -179,6 +183,7 @@ class PlayManager private constructor():Player.PlayCallBack {
         playListener?.onPlayerPlay()
         notifyPlayStateUpdate()
     }
+
     /** —————————————————————————————————————参数获取————————————————————————————————————————————— */
 
     fun getDuration(): Int {
@@ -230,6 +235,16 @@ class PlayManager private constructor():Player.PlayCallBack {
         notifyPlayListUpdate()
     }
 
+    fun updatePlayList() {
+        playList?.let { if (it.isNotEmpty()) return }
+        playList = PlaySong.cast(
+            LuckyMusicDatabase.getSongDao().getSongList(ConstantParam.SONGS_ID_LOCAL)
+        ) as MutableList<PlaySong>
+        currentIndex = 0
+        playList?.let { player?.playSong = playList!![currentIndex] }
+        playLooking = false
+    }
+
 
     fun addPlayList(playList: MutableList<PlaySong>) {
         this.playList?.addAll(playList)
@@ -241,7 +256,7 @@ class PlayManager private constructor():Player.PlayCallBack {
         notifyPlayListUpdate()
     }
 
-    fun addSong(playSong: PlaySong, index:Int) {
+    fun addSong(playSong: PlaySong, index: Int) {
         this.playList?.add(index, playSong)
         notifyPlayListUpdate()
     }
@@ -281,17 +296,17 @@ class PlayManager private constructor():Player.PlayCallBack {
         player?.pause()
     }
 
-    private fun notifyPlayListUpdate(){
+    private fun notifyPlayListUpdate() {
         playList?.let { PlayDataManager.writePlayList(it) }
     }
 
-    private fun notifyPlaySongUpdate(){
+    private fun notifyPlaySongUpdate() {
         getPlaySong()?.target?.let { PlayDataManager.writeTarget(it) }
-        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_SONGS,getPlaySong()?.songId.toString()))
+        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_SONGS, getPlaySong()?.songId.toString()))
     }
 
-    private fun notifyPlayStateUpdate(){
-        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_STATE,getPlaySong()?.songId.toString()))
+    private fun notifyPlayStateUpdate() {
+        RxBus.send(BaseBean(MessageType.CHANGE_PLAY_STATE, getPlaySong()?.songId.toString()))
     }
 
     companion object {

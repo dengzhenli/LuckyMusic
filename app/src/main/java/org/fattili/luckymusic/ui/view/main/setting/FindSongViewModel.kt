@@ -10,6 +10,7 @@ import org.fattili.luckymusic.MainApp
 import org.fattili.luckymusic.R
 import org.fattili.luckymusic.data.SongRepository
 import org.fattili.luckymusic.data.constant.ConstantParam
+import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.ui.base.BaseViewModel
 import org.fattili.luckymusic.util.SongUtil
 import java.io.File
@@ -55,6 +56,7 @@ class FindSongViewModel(
             searchFile(rootFile)
             filePath.set("共导入${num}首歌曲")
             searchMsg.set(MainApp.context.getString(R.string.lm_setting_search_end))
+            PlayManager.getInstance().updatePlayList()
         }
 
     }
