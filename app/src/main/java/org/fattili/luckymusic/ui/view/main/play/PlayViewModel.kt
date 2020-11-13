@@ -4,9 +4,11 @@ import android.os.CountDownTimer
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import org.fattili.luckymusic.data.SongRepository
+import org.fattili.luckymusic.data.SongsRepository
 import org.fattili.luckymusic.data.constant.ConstantParam
 import org.fattili.luckymusic.data.model.play.PlaySong
 import org.fattili.luckymusic.data.model.play.Song
+import org.fattili.luckymusic.data.model.play.Songs
 import org.fattili.luckymusic.player.PlayListener
 import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.player.PlayType
@@ -18,7 +20,7 @@ import org.fattili.luckymusic.util.TimeUtils
  * @author dengzhenli
  * 播放页面
  */
-class PlayViewModel(private val repository: SongRepository) : BaseViewModel(), PlayListener {
+class PlayViewModel(private val repository: SongRepository,private val songsRepository: SongsRepository) : BaseViewModel(), PlayListener {
 
 
     var playSong: MutableLiveData<PlaySong> = MutableLiveData()
@@ -134,6 +136,23 @@ class PlayViewModel(private val repository: SongRepository) : BaseViewModel(), P
         if (song == null) return false
         return repository.getSong(markId, song.target) != null
     }
+
+    fun getSongsList(): MutableList<Songs> {
+        return songsRepository.getLocalSongsList()
+    }
+
+    fun addSong(song: Song):Boolean {
+        if (repository.getSong(song.songs_id, song.target) != null){
+            return false
+        }
+        repository.addSong(song)
+        return true
+    }
+
+    fun getPlaySong(): PlaySong? {
+        return PlayManager.getInstance().getPlaySong()
+    }
+
 
     private fun mark(song: Song?) {
         val markId = ConstantParam.SONGS_ID_MARK

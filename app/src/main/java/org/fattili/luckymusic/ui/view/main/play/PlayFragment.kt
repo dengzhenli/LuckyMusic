@@ -7,11 +7,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import kotlinx.android.synthetic.main.lm_play_fragment_play.*
+import kotlinx.android.synthetic.main.lm_song_activity_song_list.*
 import org.fattili.luckymusic.R
+import org.fattili.luckymusic.data.constant.ShowMsg
+import org.fattili.luckymusic.data.model.play.Songs
 import org.fattili.luckymusic.databinding.LmPlayFragmentPlayBinding
 import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.player.PlayType
 import org.fattili.luckymusic.ui.base.BaseFragment
+import org.fattili.luckymusic.ui.view.main.song.add.AddToSongsPopup
 import org.fattili.luckymusic.util.InjectorUtil
 import org.fattili.luckymusic.util.SongUtil
 import org.fattili.luckymusic.util.TimeUtils
@@ -48,6 +52,7 @@ class PlayFragment : BaseFragment() {
         lm_play_control_next_bt.setOnClickListener { viewModel.next() }
         lm_play_control_mode_bt.setOnClickListener { setPlayModule(viewModel.changePlayType()) }
         lm_play_control_mark_bt.setOnClickListener { viewModel.changeMark() }
+        lm_play_control_add_bt.setOnClickListener { add() }
 
         lm_play_progress_seek_bar.setOnSeekBarChangeListener(object :
             OnSeekBarChangeListener {
@@ -108,6 +113,25 @@ class PlayFragment : BaseFragment() {
             PlayType.RANDOM -> lm_play_control_mode_bt.setImageResource(R.drawable.lm_play_ic_play_mode_random)
             PlayType.SINGLE_LOOP -> lm_play_control_mode_bt.setImageResource(R.drawable.lm_play_ic_play_mode_single)
         }
+    }
+
+    private fun add() {
+        val addPop = AddToSongsPopup(viewModel.getSongsList())
+        addPop.callback = object : AddToSongsPopup.PopCallBack {
+            override fun choice(pos: Int, songs: Songs) {
+                val song = viewModel.getPlaySong()?.castSong()
+                if (song != null) {
+                    song.songs_id = songs.id
+                    if (viewModel.addSong(song)) {
+                        showMsg(ShowMsg.msg_add_ok)
+                    } else {
+                        showMsg(ShowMsg.msg_song_exist)
+                    }
+
+                }
+            }
+        }
+        addPop.popupChoose(activity, view)
     }
 
 

@@ -22,7 +22,7 @@ object InjectorUtil {
 
     fun getSongsModelFactory() = SongsListModelFactory(getSongsRepository(), getSongRepository())
     fun getSongModelFactory() = SongListModelFactory(getSongRepository(), getSongsRepository())
-    fun getPlayModelFactory() = PlayModelFactory(getSongRepository())
+    fun getPlayModelFactory() = PlayModelFactory(getSongRepository(), getSongsRepository())
     fun getFindSongModelFactory() = FindSongModelFactory(getSongRepository())
 
     fun getSongEditModelFactory() = SongEditModelFactory(getSongRepository())
