@@ -187,7 +187,10 @@ class PlayManager private constructor() : Player.PlayCallBack {
     /** —————————————————————————————————————参数获取————————————————————————————————————————————— */
 
     fun getDuration(): Int {
-        return player?.duration ?: 0
+        player?.let {
+            return if (it.duration <= 1) 240000 else it.duration
+        }
+        return 240000
     }
 
     fun getProgress(): Int {
