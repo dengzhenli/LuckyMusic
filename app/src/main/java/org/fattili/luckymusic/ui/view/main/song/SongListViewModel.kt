@@ -76,6 +76,7 @@ class SongListViewModel(private val repository: SongRepository,private val songs
                 }
             }
             dataChanged.value = dataChanged.value?.plus(1)
+            PlayManager.getInstance().updatePlayList()
         }
     }
 
