@@ -77,7 +77,7 @@
     <style name="lm_song_edit_ll">
         <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/snow</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:layout_marginTop">5dp</item>
@@ -86,15 +86,16 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/snow</item>
+        <item name="android:textColor">@color/lm_font</item>
         <item name="android:layout_weight">1</item>
     </style>
     <style name="lm_song_edit_et">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/snow</item>
-        <item name="hintTextColor">@color/grey41</item>
+        <item name="android:textColor">@color/lm_font</item>
+        <item name="hintTextColor">@color/gray</item>
+        <item name="android:gravity">right</item>
         <item name="android:background">@color/transparent</item>
     </style>
 

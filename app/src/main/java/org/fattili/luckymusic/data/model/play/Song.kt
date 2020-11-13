@@ -52,6 +52,8 @@ class Song : LitePalSupport {
     var duration: Int = 0
 
 
+    constructor() : this(0,0, "", "",0, "", "","","") {}
+
     constructor(
         songs_id: Long,
         name: String,
