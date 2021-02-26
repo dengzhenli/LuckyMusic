@@ -1,6 +1,5 @@
 package org.fattili.luckymusic.util
 
-import android.annotation.SuppressLint
 
 /**
  * 2020/10/28
@@ -12,7 +11,6 @@ object TimeUtils {
      *
      * @param duration The time needs to be parsed.
      */
-    @SuppressLint("DefaultLocale")
     fun formatDuration(duration: Int): String {
         var duration = duration
         duration /= 1000 // milliseconds into seconds
