@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:padding="10dp"
-            style="@style/lm_font_style_dark_18"
+            style="@style/lm_font_style_18"
             />
         <ImageView
             android:id="@+id/lm_song_item_songs_list_more_iv"
@@ -39,7 +39,7 @@
             android:src="@drawable/lm_common_ic_more_50"
             android:background="@drawable/lm_common_selector_widget_bg"
             android:layout_height="25dp"
-            app:tint="@color/snow"
+            app:tint="@color/colorPrimary"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin" />

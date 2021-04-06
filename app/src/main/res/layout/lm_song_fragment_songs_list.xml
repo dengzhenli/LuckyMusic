@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/lm_song_songs_list_add_ll"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:gravity="center"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -36,10 +36,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/lm_common_shape_bg"
         app:layout_constraintBottom_toBottomOf="parent"

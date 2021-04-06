@@ -17,6 +17,6 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/lm_font_style_dark_18"
+        style="@style/lm_font_style_18"
         />
 </LinearLayout>
