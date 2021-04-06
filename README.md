@@ -1,6 +1,6 @@
 # LuckyMusic
 一个平平无奇的播放器
-[img](img/WechatIMG154.jpeg)
+![img](img/WechatIMG154.jpeg)
 
 目前实现的功能
 * 歌曲播放
