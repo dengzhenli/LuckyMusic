@@ -1,24 +1,27 @@
 package org.fattili.luckymusic.ui.view.main.play
 
+import android.app.Activity
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
+import org.fattili.easypopup.view.EasyPop
 import org.fattili.luckymusic.R
 import org.fattili.luckymusic.data.base.BaseBean
 import org.fattili.luckymusic.data.constant.MessageType
 import org.fattili.luckymusic.data.model.play.PlaySong
 import org.fattili.luckymusic.player.PlayManager
 import org.fattili.luckymusic.ui.adapter.PlayListAdapter
-import org.fattili.luckymusic.ui.base.BasePopup
 import org.fattili.luckymusic.util.RxBus
 import org.fattili.luckymusic.util.registerInBus
 
 /**
  * 播放列表
  */
-class PlayListPopup : BasePopup() {
+class PlayListPopup : EasyPop {
+
+    constructor(activity: Activity) : super(activity) {}
 
     var back: ImageView? = null
     var listView: ListView? = null
@@ -28,14 +31,18 @@ class PlayListPopup : BasePopup() {
     var adapter: PlayListAdapter? = null
     var list: List<PlaySong>? = null
 
-    override val layoutId: Int = R.layout.lm_play_popup_list
-    override fun initView() {
-        back = contentView?.findViewById(R.id.lm_play_list_back_iv)
-        listView = contentView?.findViewById(R.id.lm_play_list_lv)
-        exit = contentView?.findViewById(R.id.lm_play_list_exit_bt)
-        noItem = contentView?.findViewById(R.id.lm_play_list_empty_ll)
-        back?.setOnClickListener { miss() }
-        exit?.setOnClickListener { miss() }
+
+    override fun getLayoutId(): Int {
+        return R.layout.lm_play_popup_list
+    }
+
+    override fun initView(view: View?) {
+        back = view?.findViewById(R.id.lm_play_list_back_iv)
+        listView = view?.findViewById(R.id.lm_play_list_lv)
+        exit = view?.findViewById(R.id.lm_play_list_exit_bt)
+        noItem = view?.findViewById(R.id.lm_play_list_empty_ll)
+        back?.setOnClickListener { finish() }
+        exit?.setOnClickListener { finish() }
         list = PlayManager.getInstance().playList
         adapter = context?.let {
             list?.let { playlist ->
@@ -49,7 +56,7 @@ class PlayListPopup : BasePopup() {
         listView?.adapter = adapter
         listView?.setOnItemClickListener { _, _, position, _ ->
             PlayManager.getInstance().goto(position)
-            miss()
+            finish()
         }
         adapter?.setDeleteListener { pos ->
             PlayManager.getInstance().remove(pos)
@@ -58,9 +65,17 @@ class PlayListPopup : BasePopup() {
         register()
     }
 
-    override fun onDismiss() {
-        super.onDismiss()
+    override fun initData() {
+
+    }
+
+    override fun onPopDismiss() {
+        super.onPopDismiss()
         RxBus.unRegister(this)
+    }
+
+    override fun outClickable(): Boolean {
+        return false
     }
 
     private fun register() {

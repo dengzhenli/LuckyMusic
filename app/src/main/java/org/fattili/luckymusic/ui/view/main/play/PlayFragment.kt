@@ -44,8 +44,8 @@ class PlayFragment : BaseFragment() {
         binding?.viewModel = viewModel
 
         setPlayModule(viewModel.getPlayType())
-        val pop = PlayListPopup()
-        lm_play_control_list_bt.setOnClickListener { pop.popupChoose(activity, it) }
+        val pop = activity?.let { PlayListPopup(it) }
+        lm_play_control_list_bt.setOnClickListener { pop?.show() }
         lm_play_gramophone_view.setOnClickListener { viewModel.changePlay() }
         lm_play_control_start_bt.setOnClickListener { viewModel.changePlay() }
         lm_play_control_pre_bt.setOnClickListener { viewModel.previous() }
@@ -116,8 +116,8 @@ class PlayFragment : BaseFragment() {
     }
 
     private fun add() {
-        val addPop = AddToSongsPopup(viewModel.getSongsList())
-        addPop.callback = object : AddToSongsPopup.PopCallBack {
+        val addPop = activity?.let { AddToSongsPopup(viewModel.getSongsList(), it) }
+        addPop?.callback = object : AddToSongsPopup.PopCallBack {
             override fun choice(pos: Int, songs: Songs) {
                 val song = viewModel.getPlaySong()?.castSong()
                 if (song != null) {
@@ -131,7 +131,7 @@ class PlayFragment : BaseFragment() {
                 }
             }
         }
-        addPop.popupChoose(activity, view)
+        addPop?.show()
     }
 
 

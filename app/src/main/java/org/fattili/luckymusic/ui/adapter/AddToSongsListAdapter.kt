@@ -39,7 +39,7 @@ class AddToSongsListAdapter(val context: Context, private var songList: List<Son
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view = convertView
-        var holder: ViewHolder? = null
+        var holder: ViewHolder?
         if (view == null) {
             view = mInflater.inflate(R.layout.lm_song_item_song_add_to_songs_list, parent, false) //加载布局
             holder = ViewHolder()

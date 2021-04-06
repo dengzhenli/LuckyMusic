@@ -134,14 +134,14 @@ class SongListActivity : BaseActivity() {
 
         itemAdapter.setMoreClickListener { pos ->
             val id = itemAdapter.getItem(pos)?.id ?: 0
-            val pop = SongListMorePopup()
+            val pop = SongListMorePopup(this)
             pop.callback = object : SongListMorePopup.PopCallBack {
                 override fun delete() { delete(id) }
                 override fun prePlay() { prePlay(id) }
                 override fun edit() { SongEditActivity.actionStart(this@SongListActivity, id) }
                 override fun addToSongs() { addToSongs(id) }
             }
-            pop.popupChoose(this, lm_song_song_list)
+            pop.show()
         }
 
     }
@@ -160,7 +160,7 @@ class SongListActivity : BaseActivity() {
     }
 
     private fun addToSongs(songId: Long) {
-        val addPop = AddToSongsPopup(viewModel.getSongsList())
+        val addPop = AddToSongsPopup(viewModel.getSongsList(),this)
         addPop.callback = object : AddToSongsPopup.PopCallBack {
             override fun choice(pos: Int, songs: Songs) {
                 val song = viewModel.getSong(songId)?.clone(false)
@@ -175,7 +175,7 @@ class SongListActivity : BaseActivity() {
                 }
             }
         }
-        addPop.popupChoose(this@SongListActivity, lm_song_song_list)
+        addPop.show()
     }
 
     private fun register() {

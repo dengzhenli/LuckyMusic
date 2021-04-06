@@ -58,14 +58,14 @@ class SongsListFragment : BaseFragment() {
         }
         itemAdapter.setMoreClickListener { pos ->
             val id = itemAdapter.getItem(pos)?.id ?: 0
-            val pop = SongsListMorePopup(id)
-            pop.callback = object : SongsListMorePopup.PopCallBack {
+            val pop = activity?.let { view?.let { it1 -> SongsListMorePopup(id, it, it1) } }
+            pop?.callback = object : SongsListMorePopup.PopCallBack {
                 override fun play() { play(id) }
                 override fun delete() { delete(id) }
                 override fun prePlay() { prePlay(id) }
                 override fun edit() { context?.let { SongsEditActivity.actionStart(it,id ) } }
             }
-            pop.popupChoose(activity, view)
+            pop?.show()
         }
         lm_song_songs_list.layoutManager = LinearLayoutManager(context)
         lm_song_songs_list.adapter = itemAdapter

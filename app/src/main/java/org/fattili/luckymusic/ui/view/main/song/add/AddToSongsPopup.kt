@@ -1,21 +1,18 @@
 package org.fattili.luckymusic.ui.view.main.song.add
 
+import android.app.Activity
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ListView
-import android.widget.TextView
+import org.fattili.easypopup.view.EasyPop
 import org.fattili.luckymusic.R
 import org.fattili.luckymusic.data.model.play.Songs
 import org.fattili.luckymusic.ui.adapter.AddToSongsListAdapter
-import org.fattili.luckymusic.ui.adapter.PlayListAdapter
-import org.fattili.luckymusic.ui.base.BasePopup
-import org.fattili.luckymusic.ui.view.common.CommonDialog
 
 /**
  * 添加到歌单
  */
-class AddToSongsPopup(var list: MutableList<Songs>) : BasePopup() {
+class AddToSongsPopup(var list: MutableList<Songs>, activity: Activity) : EasyPop(activity) {
 
     var back: ImageView? = null
     private var listview: ListView? = null
@@ -27,19 +24,29 @@ class AddToSongsPopup(var list: MutableList<Songs>) : BasePopup() {
 
     var callback: PopCallBack? = null
 
-    override val layoutId: Int = R.layout.lm_song_popup_song_add_to_songs
+    override fun getLayoutId(): Int {
+        return R.layout.lm_song_popup_song_add_to_songs
+    }
 
-    override fun initView() {
-        back = contentView?.findViewById(R.id.lm_song_song_add_to_songs_back_iv)
-        listview = contentView?.findViewById(R.id.lm_song_song_add_to_songs_lv)
-        back?.setOnClickListener { miss() }
+    override fun initData() {
+    }
+
+    override fun initView(view: View?) {
+        back = view?.findViewById(R.id.lm_song_song_add_to_songs_back_iv)
+        listview = view?.findViewById(R.id.lm_song_song_add_to_songs_lv)
+        back?.setOnClickListener { finish() }
 
         adapter = context?.let { AddToSongsListAdapter(it, list) }
         listview?.adapter = adapter
 
         listview?.setOnItemClickListener { parent, view, position, id ->
-            miss()
+            finish()
             callback?.choice(position, list[position])
         }
     }
+
+    override fun outClickable(): Boolean {
+        return false
+    }
+
 }

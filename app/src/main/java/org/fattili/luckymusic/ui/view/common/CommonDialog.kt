@@ -14,7 +14,7 @@ import org.fattili.luckymusic.ui.base.BaseDialog
  */
 class CommonDialog(context: Context?) : BaseDialog(context!!, R.style.lm_dialog_base) {
     override val layoutId: Int
-        protected get() = R.layout.lm_common_dialog
+        get() = R.layout.lm_common_dialog
 
     private var titleTv: TextView? = null
     private var messageTv: TextView? = null

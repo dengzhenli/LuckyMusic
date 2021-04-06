@@ -70,4 +70,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
 
     implementation 'androidx.multidex:multidex:2.0.1'
+
+    implementation 'com.github.dengzhenli:EasyPopup:1.0.2'
 }

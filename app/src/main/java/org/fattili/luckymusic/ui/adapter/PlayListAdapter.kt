@@ -52,7 +52,7 @@ class PlayListAdapter(val context: Context, private var songList: List<PlaySong>
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view = convertView
-        var holder: ViewHolder? = null
+        var holder: ViewHolder?
         if (view == null) {
             view = mInflater.inflate(R.layout.lm_play_item_playlist, parent, false) //加载布局
             holder = ViewHolder()
