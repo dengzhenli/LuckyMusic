@@ -31,7 +31,7 @@ class PlayManager private constructor() : Player.PlayCallBack {
     /**—————————————————————————————————————播放器操作—————————————————————————————————————————————*/
     fun play(): Boolean {
         if (player == null) {
-            Logger.e("player is NULL!!")
+            Logger.e("player is NULL!")
             ToastUtil.show(ShowMsg.msg_play_fail_app)
             return false
         }
@@ -61,7 +61,7 @@ class PlayManager private constructor() : Player.PlayCallBack {
 
     fun pause() {
         if (player == null) {
-            Logger.e("player is NULL!!")
+            Logger.e("player is NULL!")
             return
         }
         player?.pause()
@@ -69,41 +69,44 @@ class PlayManager private constructor() : Player.PlayCallBack {
 
     fun next() {
         if (player == null) {
-            Logger.e("player is NULL!!")
+            Logger.e("player is NULL!")
             ToastUtil.show(ShowMsg.msg_app)
             return
         }
         if (playList == null) {
-            Logger.e("playList is NULL!!")
+            Logger.e("playList is NULL!")
             ToastUtil.show(ShowMsg.msg_app)
             return
         }
         pause()
-        val n = playList?.size ?: 0
-        if (n > 0) {
-            when (playType) {
-                PlayType.SINGLE_LOOP -> {
-                }
-                PlayType.LIST_LOOP -> {
-                    currentIndex++
-                    currentIndex %= n
-                    if (currentIndex in 0 until n) {
-                        player?.playSong = playList!![currentIndex]
+        playList?.let {
+            val n = it.size ?: 0
+            if (n > 0) {
+                when (playType) {
+                    PlayType.SINGLE_LOOP -> {
                     }
-                }
-                PlayType.LIST -> {
-                    if (currentIndex != n - 1) currentIndex++
-
-                    if (currentIndex in 0 until n) {
-                        player?.playSong = playList!![currentIndex]
-                    } else {
-                        currentIndex = n - 1
+                    PlayType.LIST_LOOP -> {
+                        currentIndex++
+                        currentIndex %= n
+                        if (currentIndex in 0 until n) {
+                            player?.playSong = it[currentIndex]
+                        }
                     }
-                }
+                    PlayType.LIST -> {
+                        if (currentIndex != n - 1) currentIndex++
 
-                PlayType.RANDOM -> player?.playSong = playList!![Random(n.toLong()).nextInt()]
+                        if (currentIndex in 0 until n) {
+                            player?.playSong = it[currentIndex]
+                        } else {
+                            currentIndex = n - 1
+                        }
+                    }
+
+                    PlayType.RANDOM -> player?.playSong = it[Random(n.toLong()).nextInt()]
+                }
             }
         }
+
         playLooking = false
         play()
 
@@ -111,40 +114,43 @@ class PlayManager private constructor() : Player.PlayCallBack {
 
     fun previous() {
         if (player == null) {
-            Logger.e("player is NULL!!")
+            Logger.e("player is NULL!")
             ToastUtil.show(ShowMsg.msg_app)
             return
         }
         if (playList == null) {
-            Logger.e("playList is NULL!!")
+            Logger.e("playList is NULL!")
             ToastUtil.show(ShowMsg.msg_app)
             return
         }
         pause()
-        val n = playList?.size ?: 0
-        if (n > 0) {
-            when (playType) {
-                PlayType.SINGLE_LOOP -> {
-                }
-                PlayType.LIST_LOOP -> {
-                    currentIndex--
-                    currentIndex %= n
-                    if (currentIndex in 0 until n) {
-                        player?.playSong = playList!![currentIndex]
+        playList?.let {
+            val n = it.size ?: 0
+            if (n > 0) {
+                when (playType) {
+                    PlayType.SINGLE_LOOP -> {
                     }
-                }
-                PlayType.LIST -> {
-                    if (currentIndex != 0) currentIndex--
+                    PlayType.LIST_LOOP -> {
+                        currentIndex--
+                        currentIndex %= n
+                        if (currentIndex in 0 until n) {
+                            player?.playSong = it[currentIndex]
+                        }
+                    }
+                    PlayType.LIST -> {
+                        if (currentIndex != 0) currentIndex--
 
-                    if (currentIndex in 0 until n) {
-                        player?.playSong = playList!![currentIndex]
-                    } else {
-                        currentIndex = 0
+                        if (currentIndex in 0 until n) {
+                            player?.playSong = it[currentIndex]
+                        } else {
+                            currentIndex = 0
+                        }
                     }
+                    PlayType.RANDOM -> player?.playSong = it[Random(n.toLong()).nextInt()]
                 }
-                PlayType.RANDOM -> player?.playSong = playList!![Random(n.toLong()).nextInt()]
             }
         }
+
         playLooking = false
         play()
     }
@@ -159,7 +165,7 @@ class PlayManager private constructor() : Player.PlayCallBack {
 
     fun seekTo(progress: Int): Boolean {
         if (player == null) {
-            Logger.e("player is NULL!!")
+            Logger.e("player is NULL!")
             ToastUtil.show(ShowMsg.msg_app)
             return false
         }
@@ -244,7 +250,7 @@ class PlayManager private constructor() : Player.PlayCallBack {
             LuckyMusicDatabase.getSongDao().getSongList(ConstantParam.SONGS_ID_LOCAL)
         ) as MutableList<PlaySong>
         currentIndex = 0
-        playList?.let { player?.playSong = playList!![currentIndex] }
+        playList?.let { player?.playSong = it[currentIndex] }
         playLooking = false
     }
 

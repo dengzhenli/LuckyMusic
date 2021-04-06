@@ -92,19 +92,22 @@ class SongsListFragment : BaseFragment() {
     }
 
     private fun showAddDialog() {
-        var dialog = AddSongsDialog(context!!)
-        dialog.dialogResult = object : AddSongsDialog.DialogResult {
-            override fun addResult(name: String) {
-                val ret = viewModel.add(name)
-                if (ret) {
-                    showMsg("添加成功")
-                    dialog.dismiss()
-                } else {
-                    showMsg("添加失败")
+        context?.let {
+            var dialog = AddSongsDialog(it)
+            dialog.dialogResult = object : AddSongsDialog.DialogResult {
+                override fun addResult(name: String) {
+                    val ret = viewModel.add(name)
+                    if (ret) {
+                        showMsg("添加成功")
+                        dialog.dismiss()
+                    } else {
+                        showMsg("添加失败")
+                    }
                 }
             }
+            dialog.show()
         }
-        dialog.show()
+
     }
 
 

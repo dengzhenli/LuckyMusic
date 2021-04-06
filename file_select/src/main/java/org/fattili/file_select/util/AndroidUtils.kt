@@ -24,10 +24,10 @@ object AndroidUtils {
 
     private const val REQUEST_WRITE_EXTERNAL_STORAGE = 0
 
-    fun checkPermission(activity: Activity?) {
+    fun checkPermission(activity: Activity) {
         //检查权限（NEED_PERMISSION）是否被授权 PackageManager.PERMISSION_GRANTED表示同意授权
         if (ActivityCompat.checkSelfPermission(
-                activity!!,
+                activity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
             != PackageManager.PERMISSION_GRANTED

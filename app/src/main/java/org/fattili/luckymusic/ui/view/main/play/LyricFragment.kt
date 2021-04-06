@@ -1,7 +1,7 @@
 package org.fattili.luckymusic.ui.view.main.play
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import org.fattili.luckymusic.R
 import org.fattili.luckymusic.ui.base.BaseFragment
 
@@ -14,12 +14,11 @@ class LyricFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java)
+        pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java)
         var index = 1
-        if (arguments != null) {
-            index = arguments!!.getInt(ARG_SECTION_NUMBER)
-        }
-        pageViewModel!!.setIndex(index)
+        arguments?.let { index = it.getInt(ARG_SECTION_NUMBER) }
+
+        pageViewModel?.setIndex(index)
     }
 
     override val layoutId: Int
@@ -27,7 +26,7 @@ class LyricFragment : BaseFragment() {
 
     override fun initView() {
 //        val textView = mView.findViewById<TextView>(R.id.section_label)
-//        pageViewModel!!.text.observe(this, Observer { s ->
+//        pageViewModel.text.observe(this, Observer { s ->
 //            if (textView != null) {
 //                textView.text = s
 //            }

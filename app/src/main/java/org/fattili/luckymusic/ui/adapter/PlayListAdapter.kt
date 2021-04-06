@@ -66,10 +66,12 @@ class PlayListAdapter(val context: Context, private var songList: List<PlaySong>
             holder = view.tag as ViewHolder
         }
 
-        Glide.with(context)
-            .load(SongUtil.getImage(MediaMetadataRetriever(), songList[position].path))
-            .error(R.mipmap.lm_dog)
-            .into(holder.image!!)
+        holder.image?.let {
+            Glide.with(context)
+                .load(SongUtil.getImage(MediaMetadataRetriever(), songList[position].path))
+                .error(R.mipmap.lm_dog)
+                .into(it)
+        }
         holder.playImage?.visibility =
             if (PlayManager.getInstance().getCurrentIndex() == position) View.VISIBLE
             else View.INVISIBLE
@@ -77,7 +79,7 @@ class PlayListAdapter(val context: Context, private var songList: List<PlaySong>
         holder.name?.text = songList[position].title
         holder.singer?.text = songList[position].artist
         holder.deleteImage?.setOnClickListener { deleteListener.invoke(position) }
-        return view!!
+        return view as View
     }
 
     private inner class ViewHolder {

@@ -73,7 +73,7 @@ class DiskView(context: Context, attrs: AttributeSet? = null) : View(context, at
      * @param dst 目标矩形
      */
     private fun setBitmapRect(src: Rect, dst: Rect) {
-        src[0, 0, bitmap!!.width] = bitmap!!.height
+        src[0, 0, bitmap?.width ?: 0] = bitmap?.height ?: 0
         dst[-pictureRadius, -pictureRadius, pictureRadius] = pictureRadius
     }
 
@@ -118,7 +118,7 @@ class DiskView(context: Context, attrs: AttributeSet? = null) : View(context, at
         canvas.drawCircle(0f, 0f, pictureRadius + ringWidth / 2.toFloat(), discPaint)
         // 绘制图片
         canvas.clipPath(clipPath)
-        canvas.drawBitmap(bitmap!!, srcRect, dstRect, discPaint)
+        bitmap?.let { canvas.drawBitmap(it, srcRect, dstRect, discPaint) }
         canvas.restore()
     }
 

@@ -35,7 +35,7 @@ class Player {
         if (playSong == null) return false
         try {
             mPlayer.reset()
-            mPlayer.setDataSource(playSong!!.path)
+            mPlayer.setDataSource(playSong?.path)
             mPlayer.prepare()
             mPlayer.start()
             playCallback?.onPlay(playSong)

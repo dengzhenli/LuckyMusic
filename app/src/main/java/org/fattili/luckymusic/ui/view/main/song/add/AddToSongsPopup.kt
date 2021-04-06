@@ -39,7 +39,7 @@ class AddToSongsPopup(var list: MutableList<Songs>, activity: Activity) : EasyPo
         adapter = context?.let { AddToSongsListAdapter(it, list) }
         listview?.adapter = adapter
 
-        listview?.setOnItemClickListener { parent, view, position, id ->
+        listview?.setOnItemClickListener { _, _, position, _ ->
             finish()
             callback?.choice(position, list[position])
         }

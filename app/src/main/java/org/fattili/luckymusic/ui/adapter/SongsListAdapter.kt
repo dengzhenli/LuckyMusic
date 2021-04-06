@@ -37,7 +37,7 @@ class SongsListAdapter(list: List<Songs?>?) :
         //设置textView显示内容为list里的对应项
         holder.textView.text = list[position]?.name
         //子项的点击事件监听
-        holder.itemView.setOnClickListener { clickListener!!.invoke(position) }
+        holder.itemView.setOnClickListener { clickListener?.invoke(position) }
         holder.moreImage.setOnClickListener { moreListener.invoke(position) }
         holder.label.setImageResource(
             when (list[position]?.id) {

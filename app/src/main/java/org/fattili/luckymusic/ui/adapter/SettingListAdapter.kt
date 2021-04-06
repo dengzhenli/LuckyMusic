@@ -27,7 +27,7 @@ class SettingListAdapter(data: List<String>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.linearLayout.setOnClickListener {
             if (clickListener != null) {
-                clickListener!!.invoke(position)
+                clickListener?.invoke(position)
             }
         }
         val info = list[position] ?: return

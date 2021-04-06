@@ -53,7 +53,7 @@ class ChooseFile : BaseChooseFile() {
                 if (chooseExit) {
                     miss()
                 }
-                chooseFileBack!!.onChooseBack(
+                chooseFileBack?.onChooseBack(
                     clickPath,
                     FileUtils.pathGetType(resourceList[position].path)
                 )

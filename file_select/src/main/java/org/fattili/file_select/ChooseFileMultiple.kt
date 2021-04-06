@@ -79,14 +79,14 @@ class ChooseFileMultiple : BaseChooseFile() {
             if (resourceList[position].isSelect) {
                 paths.remove(resourceList[position].path)
                 resourceList[position].isSelect = false
-                resourceListAdapter!!.notifyDataSetChanged()
+                resourceListAdapter?.notifyDataSetChanged()
             } else {
                 paths.add(resourceList[position].path)
                 resourceList[position].isSelect = true
-                resourceListAdapter!!.notifyDataSetChanged()
+                resourceListAdapter?.notifyDataSetChanged()
             }
         }
-        yesText!!.text = "确认(" + paths.size + ")"
+        yesText?.text = "确认(" + paths.size + ")"
     }
 
 }

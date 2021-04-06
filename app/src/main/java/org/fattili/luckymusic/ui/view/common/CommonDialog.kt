@@ -12,7 +12,7 @@ import org.fattili.luckymusic.ui.base.BaseDialog
  * @author dengzhenli
  * 通用弹窗
  */
-class CommonDialog(context: Context?) : BaseDialog(context!!, R.style.lm_dialog_base) {
+class CommonDialog(context: Context) : BaseDialog(context, R.style.lm_dialog_base) {
     override val layoutId: Int
         get() = R.layout.lm_common_dialog
 
@@ -29,7 +29,7 @@ class CommonDialog(context: Context?) : BaseDialog(context!!, R.style.lm_dialog_
 
     }
 
-    class Builder(context: Context?) {
+    class Builder(context: Context) {
         var commonDialog: CommonDialog? = null
         fun setTitle(title: String?): Builder {
             commonDialog?.titleTv?.text = title
@@ -46,7 +46,7 @@ class CommonDialog(context: Context?) : BaseDialog(context!!, R.style.lm_dialog_
             val onClickListener =
                 View.OnClickListener { v ->
                     listener?.onClick(v)
-                    commonDialog!!.dismiss()
+                    commonDialog?.dismiss()
                 }
             commonDialog?.measureBt?.setOnClickListener(onClickListener)
             return this
@@ -57,14 +57,14 @@ class CommonDialog(context: Context?) : BaseDialog(context!!, R.style.lm_dialog_
             val onClickListener =
                 View.OnClickListener { v ->
                     listener?.onClick(v)
-                    commonDialog!!.dismiss()
+                    commonDialog?.dismiss()
                 }
             commonDialog?.candleBt?.setOnClickListener(onClickListener)
             return this
         }
 
         fun show() {
-            commonDialog!!.show()
+            commonDialog?.show()
         }
 
         init {

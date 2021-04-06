@@ -17,7 +17,7 @@ object LuckyMusicDatabase {
         if (songsDao == null) {
             songsDao = SongsDao()
         }
-        return songsDao!!
+        return songsDao as SongsDao
     }
 
     fun getSongDao(): SongDao {

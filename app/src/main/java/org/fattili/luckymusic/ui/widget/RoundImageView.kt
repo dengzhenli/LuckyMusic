@@ -13,23 +13,23 @@ import androidx.appcompat.widget.AppCompatImageView
  * 椭圆ImageView
  * @author dengzhenli
  */
-class RoundImageView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : AppCompatImageView(context!!, attrs, defStyleAttr) {
+class RoundImageView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : AppCompatImageView(context, attrs, defStyleAttr) {
     var width = 0f
     var height = 0f
 
-    constructor(context: Context?) : this(context, null) {
+    constructor(context: Context) : this(context, null) {
         init(context, null)
     }
 
     constructor(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?
     ) : this(context, attrs, 0) {
         init(context, attrs)
     }
 
     private fun init(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?
     ) {
         if (Build.VERSION.SDK_INT < 18) {

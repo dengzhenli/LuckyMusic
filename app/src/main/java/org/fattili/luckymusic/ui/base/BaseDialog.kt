@@ -24,7 +24,8 @@ abstract class BaseDialog(var mContext: Context, theme: Int = R.style.lm_dialog_
         view = inflater.inflate(layoutId, null)
 
         // 初始化
-        this.setContentView(view!!)
+        view?.let { this.setContentView(it) }
+
 
         //关闭当前界面
         val backIv = view?.findViewById<ImageView>(R.id.lm_main_back_iv)

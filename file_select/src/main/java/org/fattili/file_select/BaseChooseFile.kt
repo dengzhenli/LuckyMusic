@@ -37,16 +37,16 @@ abstract class BaseChooseFile {
 
 
     fun miss() {
-        if (pWindow != null && pWindow!!.isShowing) {
-            pWindow!!.dismiss()
+        if (pWindow != null && pWindow?.isShowing == true) {
+            pWindow?.dismiss()
         }
     }
 
     val isShowing: Boolean
-        get() = pWindow != null && pWindow!!.isShowing
+        get() = pWindow != null && pWindow?.isShowing == true
 
     fun popupChoose(
-        activity: Activity?,
+        activity: Activity,
         v: View?,
         window: Window?,
         inflater: LayoutInflater,
@@ -56,7 +56,7 @@ abstract class BaseChooseFile {
         context = activity
         this.window = window
         this.chooseExit = chooseExit
-        if (pWindow != null && pWindow!!.isShowing) {
+        if (pWindow != null && pWindow?.isShowing == true) {
             miss()
         } else {
             initView(inflater)
@@ -74,9 +74,9 @@ abstract class BaseChooseFile {
 
 
     fun backgroundAlpha(bgAlpha: Float) {
-        val lp = window!!.attributes
-        lp.alpha = bgAlpha // 0.0-1.0
-        window!!.attributes = lp
+        val lp = window?.attributes
+        lp?.alpha = bgAlpha // 0.0-1.0
+        window?.attributes = lp
     }
 
     open fun initData() {
@@ -99,14 +99,14 @@ abstract class BaseChooseFile {
         if (l < 1) {
             return
         }
-        rootPath!!.text = pathString[l - 1]
+        rootPath?.text = pathString[l - 1]
         val directory = File(pathString[l - 1])
         val files = directory.listFiles()
         if (files != null) {
             if (files.isEmpty()) {
-                noFile!!.visibility = View.VISIBLE
+                noFile?.visibility = View.VISIBLE
             } else {
-                noFile!!.visibility = View.GONE
+                noFile?.visibility = View.GONE
             }
             var resourceListBean: ResourceListBean
             for (file2 in files) {
@@ -136,7 +136,7 @@ abstract class BaseChooseFile {
                 }
             }
         }
-        resourceListAdapter!!.notifyDataSetChanged()
+        resourceListAdapter?.notifyDataSetChanged()
     }
 
     abstract fun initView(inflater: LayoutInflater)
@@ -151,7 +151,7 @@ abstract class BaseChooseFile {
 
     fun toPath(clickPath: String) {
         pathString.add(clickPath)
-        rootPath!!.text = clickPath
+        rootPath?.text = clickPath
         upListAdapter()
     }
 }
