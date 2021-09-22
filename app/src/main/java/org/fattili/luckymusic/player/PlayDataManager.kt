@@ -73,6 +73,8 @@ object PlayDataManager {
     private fun readPlayType(): PlayType {
         try {
             return PlayType.valueOf(SharePrefUtil.getData(keyName, "playType"))
+        } catch (e: IllegalArgumentException) {
+            Logger.e(e)
         } catch (e: Exception) {
             Logger.e(e)
         }

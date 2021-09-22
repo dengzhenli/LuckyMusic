@@ -67,27 +67,30 @@ class FindSongViewModel(
     private suspend fun searchFile(path: String) {
         var file = File(path)
         var fileList = file.listFiles()
-        for (f in fileList) {
-            //扫描速度控制，给用户一定肉眼效果
-            if (fileNum % showMargin == 0) {
-                delay(1)
-                searchMsg.set(MainApp.context.getString(R.string.lm_setting_searching) + points[fileNum / showMargin % points.size])
-            }
-            fileNum ++
-            filePath.set(f.absolutePath)
-            if (!f.canRead()) continue
-            if (f.isDirectory) {
-                //不扫描隐藏文件夹
-                if (!f.name.startsWith(".")) {
-                    searchFile(f.absolutePath)
+        fileList?.let {
+            for (f in it) {
+                //扫描速度控制，给用户一定肉眼效果
+                if (fileNum % showMargin == 0) {
+                    delay(1)
+                    searchMsg.set(MainApp.context.getString(R.string.lm_setting_searching) + points[fileNum / showMargin % points.size])
                 }
-            } else {
-                if ("mp3" == f.extension) {
-                    addSong(f)
-                    delay(100)
+                fileNum ++
+                filePath.set(f.absolutePath)
+                if (!f.canRead()) continue
+                if (f.isDirectory) {
+                    //不扫描隐藏文件夹
+                    if (!f.name.startsWith(".")) {
+                        searchFile(f.absolutePath)
+                    }
+                } else {
+                    if ("mp3" == f.extension) {
+                        addSong(f)
+                        delay(100)
+                    }
                 }
             }
         }
+        
     }
 
     private fun addSong(file: File) {

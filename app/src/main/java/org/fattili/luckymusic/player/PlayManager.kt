@@ -250,7 +250,11 @@ class PlayManager private constructor() : Player.PlayCallBack {
             LuckyMusicDatabase.getSongDao().getSongList(ConstantParam.SONGS_ID_LOCAL)
         ) as MutableList<PlaySong>
         currentIndex = 0
-        playList?.let { player?.playSong = it[currentIndex] }
+        playList?.let {
+            if (it.size > 0) {
+                player?.playSong = it[currentIndex]
+            }
+        }
         playLooking = false
     }
 
